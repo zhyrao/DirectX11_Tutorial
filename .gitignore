@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+.vs/
+x64/
+DirectX11_Tutorial.vcxproj.filters
+DirectX11_Tutorial.vcxproj.user
