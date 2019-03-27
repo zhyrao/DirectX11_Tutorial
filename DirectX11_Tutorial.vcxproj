@@ -139,12 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Dependencies\math\D3DX10.h" />
-    <ClInclude Include="Dependencies\math\d3dx10async.h" />
-    <ClInclude Include="Dependencies\math\D3DX10core.h" />
-    <ClInclude Include="Dependencies\math\D3DX10math.h" />
-    <ClInclude Include="Dependencies\math\D3DX10mesh.h" />
-    <ClInclude Include="Dependencies\math\D3DX10tex.h" />
     <ClInclude Include="Graphics\d3d\D3DClass.h" />
     <ClInclude Include="Graphics\GraphicsClass.h" />
     <ClInclude Include="Input\InputClass.h" />
@@ -156,9 +150,6 @@
     <ClCompile Include="Input\InputClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SystemClass.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\math\D3DX10math.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
