@@ -6,8 +6,9 @@
 #include "d3d/D3DClass.h"
 
 #include "../Input/Camera/CameraClass.h"
-#include "ModelClass.h"
-#include "ColorShaderClass.h"
+#include "Model/ModelClass.h"
+#include "Shader/ColorShaderClass.h"
+#include "Shader/TextureShaderClass.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Globals
@@ -36,5 +37,6 @@ private:
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
 	ColorShaderClass* m_ColorShader;
+	TextureShaderClass* m_TextureShader;
 };
 

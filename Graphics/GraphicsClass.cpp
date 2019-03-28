@@ -8,6 +8,7 @@ GraphicsClass::GraphicsClass()
 	m_Camera = 0;
 	m_Model = 0;
 	m_ColorShader = 0;
+	m_TextureShader = 0;
 }
 
 
@@ -52,7 +53,7 @@ bool GraphicsClass::Initialize(int width, int height, HWND hWnd)
 	if (!m_Model) return false;
 
 	// initialize model class	
-	result = m_Model->Initialize(m_D3D->GetDevice());
+	result = m_Model->Initialize(m_D3D->GetDevice(), "D:\\Projects\\DirectX11_Tutorial\\Resources\\Textures\\earth.dds");
 	if (!result)
 	{
 		MessageBox(hWnd, "Could not initialize the model object.", "Error", MB_OK);
@@ -70,11 +71,32 @@ bool GraphicsClass::Initialize(int width, int height, HWND hWnd)
 		MessageBox(hWnd, "Could not initialize the color shader object.", "Error", MB_OK);
 		return false;
 	}
+
+	// create texture shader
+	m_TextureShader = new TextureShaderClass();
+	if (!m_TextureShader) return false;
+
+	// init the texture shader
+	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hWnd);
+	if(!result)
+	{
+		MessageBox(hWnd, "Could not initialize the texture shader object.", "Error", MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
 void GraphicsClass::ShutDown()
 {
+	// release the texture shader
+	if (m_TextureShader)
+	{
+		m_TextureShader->Shutdown();
+		delete m_TextureShader;
+		m_TextureShader = 0;
+	}
+
 	// release the color shader
 	if (m_ColorShader)
 	{
@@ -141,7 +163,8 @@ bool GraphicsClass::Render()
 	m_Model->Render(m_D3D->GetDeviceContext());
 
 	// render the model using color shader
-	result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	//result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
 	if (!result) return false;
 
 	// present the rendered scene to the screen
