@@ -5,6 +5,10 @@
 
 #include "d3d/D3DClass.h"
 
+#include "../Input/Camera/CameraClass.h"
+#include "ModelClass.h"
+#include "ColorShaderClass.h"
+
 //////////////////////////////////////////////////////////////////////////
 // Globals
 //////////////////////////////////////////////////////////////////////////
@@ -29,5 +33,8 @@ private:
 
 private:
 	D3DClass* m_D3D;
+	CameraClass* m_Camera;
+	ModelClass* m_Model;
+	ColorShaderClass* m_ColorShader;
 };
 
