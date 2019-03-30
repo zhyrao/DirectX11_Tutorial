@@ -17,7 +17,7 @@ bool TextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 	bool result;
 
 	// initialize the vertex and pixel shader
-	result = InitializeShader(device, hwnd, "D:\\Projects\\DirectX11_Tutorial\\Shaders\\05\\texture.vs", "D:\\Projects\\DirectX11_Tutorial\\Shaders\\05\\texture.ps");
+	result = InitializeShader(device, hwnd, "D:\\Projects\\DirectX11_Tutorial\\Shaders\\05\\vtexture.hlsl", "D:\\Projects\\DirectX11_Tutorial\\Shaders\\05\\ptexture.hlsl");
 	if (!result)
 		return false;
 
