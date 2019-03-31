@@ -145,6 +145,8 @@
     <ClInclude Include="Graphics\GraphicsClass.h" />
     <ClInclude Include="Graphics\Model\ModelClass.h" />
     <ClInclude Include="Input\InputClass.h" />
+    <ClInclude Include="Graphics\Shader\LightShaderClass.h" />
+    <ClInclude Include="Graphics\LightClass.h" />
     <ClInclude Include="SystemClass.h" />
     <ClInclude Include="Graphics\Model\Texture\TextureClass.h" />
     <ClInclude Include="Graphics\Shader\TextureShaderClass.h" />
@@ -156,6 +158,8 @@
     <ClCompile Include="Graphics\GraphicsClass.cpp" />
     <ClCompile Include="Graphics\Model\ModelClass.cpp" />
     <ClCompile Include="Input\InputClass.cpp" />
+    <ClCompile Include="Graphics\Shader\LightShaderClass.cpp" />
+    <ClCompile Include="Graphics\LightClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SystemClass.cpp" />
     <ClCompile Include="Graphics\Model\Texture\TextureClass.cpp" />

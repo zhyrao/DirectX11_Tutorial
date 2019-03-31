@@ -9,6 +9,8 @@ GraphicsClass::GraphicsClass()
 	m_Model = 0;
 	m_ColorShader = 0;
 	m_TextureShader = 0;
+	m_LightShader = 0;
+	m_LightClass = 0;
 }
 
 
@@ -60,35 +62,70 @@ bool GraphicsClass::Initialize(int width, int height, HWND hWnd)
 		return false;
 	}
 
-	// create color shader object
-	m_ColorShader = new ColorShaderClass();
-	if (!m_ColorShader) return false;
+	//// create color shader object
+	//m_ColorShader = new ColorShaderClass();
+	//if (!m_ColorShader) return false;
+	//
+	//// initialize the color shader object
+	//result = m_ColorShader->Initialize(m_D3D->GetDevice(), hWnd);
+	//if (!result)
+	//{
+	//	MessageBox(hWnd, "Could not initialize the color shader object.", "Error", MB_OK);
+	//	return false;
+	//}
+	//
+	//// create texture shader
+	//m_TextureShader = new TextureShaderClass();
+	//if (!m_TextureShader) return false;
+	//
+	//// init the texture shader
+	//result = m_TextureShader->Initialize(m_D3D->GetDevice(), hWnd);
+	//if(!result)
+	//{
+	//	MessageBox(hWnd, "Could not initialize the texture shader object.", "Error", MB_OK);
+	//	return false;
+	//}
 
-	// initialize the color shader object
-	result = m_ColorShader->Initialize(m_D3D->GetDevice(), hWnd);
+	// create te light shader object
+	m_LightShader = new LightShaderClass;
+	if (!m_LightShader)
+	{
+		return false;
+	}
+
+	// initialize the light shader projection
+	result = m_LightShader->Initialize(m_D3D->GetDevice(), hWnd);
 	if (!result)
 	{
-		MessageBox(hWnd, "Could not initialize the color shader object.", "Error", MB_OK);
+		MessageBox(hWnd, "Could not initialize the light shader object.", "Error", MB_OK);
 		return false;
 	}
+	//THE NEW LIGHT OBJECT IS CREATED HERE
+	m_LightClass = new LightClass;
+	if (!m_LightClass) return false;
 
-	// create texture shader
-	m_TextureShader = new TextureShaderClass();
-	if (!m_TextureShader) return false;
-
-	// init the texture shader
-	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hWnd);
-	if(!result)
-	{
-		MessageBox(hWnd, "Could not initialize the texture shader object.", "Error", MB_OK);
-		return false;
-	}
+	// initialize light object
+	m_LightClass->SetDiffuseColor(1.f, 0.f, 1.f, 1.f);
+	m_LightClass->SetDirection(0.f, 0.f, 1.f);
 
 	return true;
 }
 
 void GraphicsClass::ShutDown()
 {
+	if (m_LightClass)
+	{
+		delete m_LightClass;
+		m_LightClass = 0;
+	}
+
+	if (m_LightShader)
+	{
+		m_LightShader->Shutdown();
+		delete m_LightShader;
+		m_LightShader = 0;
+	}
+
 	// release the texture shader
 	if (m_TextureShader)
 	{
@@ -132,9 +169,16 @@ void GraphicsClass::ShutDown()
 bool GraphicsClass::Frame()
 {
 	bool result;
+	
+	static float rotation = 0.f;
+
+	// update the rotation varialbe each frame
+	rotation += (float)D3DX_PI* 0.01f;
+	if (rotation > 360.f)
+		rotation = -360.f;
 
 	// render the graphic scene
-	result = Render();
+	result = Render(rotation);
 	if (!result)
 	{
 		return false;
@@ -143,7 +187,7 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
-bool GraphicsClass::Render()
+bool GraphicsClass::Render(float rotation)
 {
 	D3DXMATRIX viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
@@ -159,12 +203,17 @@ bool GraphicsClass::Render()
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
+	// rotate the world matrix by the rotation value so that the triangle wil spin
+	D3DXMatrixRotationY(&worldMatrix, rotation);
+
 	// put the model vertex and index buffers on the graphics pipeline to prepare them for drawing
 	m_Model->Render(m_D3D->GetDeviceContext());
 
 	// render the model using color shader
-	//result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
-	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
+	// result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	// result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model->GetTexture(), m_LightClass->GetDirection(), m_LightClass->GetDiffuseColor());
 	if (!result) return false;
 
 	// present the rendered scene to the screen

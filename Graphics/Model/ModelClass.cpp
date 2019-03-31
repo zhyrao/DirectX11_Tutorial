@@ -63,7 +63,8 @@ ID3D11ShaderResourceView * ModelClass::GetTexture()
 bool ModelClass::InitializeBuffers(ID3D11Device * device)
 {
 	//VertexType* vertices;
-	TextureVertexType* vertices;
+	//TextureVertexType* vertices;
+	LightVertexType* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -78,7 +79,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 
 	// create the vertex array
 	//vertices = new VertexType[m_VertexCount];
-	vertices = new TextureVertexType[m_VertexCount];
+	vertices = new LightVertexType[m_VertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -95,14 +96,17 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 	vertices[0].position = D3DXVECTOR3(-1.0f, -1.f, 0.f); // bottom left
 	//vertices[0].color = D3DXVECTOR4(0.0f, 1.0f, 0.f, 1.f);
 	vertices[0].texture = D3DXVECTOR2(0.0f, 1.0f);
+	vertices[0].normal = D3DXVECTOR3(0.0f, 0.f, -1.0f);
 
 	vertices[1].position = D3DXVECTOR3(0.0f, 1.f, 0.f); // top middle
 	//vertices[1].color = D3DXVECTOR4(0.0f, 1.0f, 0.f, 1.f);
 	vertices[1].texture = D3DXVECTOR2(0.5f, 0.0f);
+	vertices[1].normal = D3DXVECTOR3(0.0f, 0.f, -1.0f);
 
 	vertices[2].position = D3DXVECTOR3(1.0f, -1.f, 0.f); // bottom right
 	//vertices[2].color = D3DXVECTOR4(0.0f, 1.0f, 0.f, 1.f);	
 	vertices[2].texture = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[2].normal = D3DXVECTOR3(0.0f, 0.f, -1.0f);
 
 
 	// load the index array with data
@@ -113,7 +117,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 	// set up the description of the static vertex buffer
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	//vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_VertexCount;
-	vertexBufferDesc.ByteWidth = sizeof(TextureVertexType) * m_VertexCount;
+	//vertexBufferDesc.ByteWidth = sizeof(TextureVertexType) * m_VertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(LightVertexType) * m_VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
