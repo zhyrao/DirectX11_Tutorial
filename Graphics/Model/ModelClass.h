@@ -7,6 +7,8 @@
 #include <d3d11.h>
 #include <d3dx10math.h>
 
+#include <fstream>
+using namespace std;
 
 // class includes
 #include "Texture/TextureClass.h"
@@ -29,12 +31,19 @@ private:
 		D3DXVECTOR3 normal;
 	};
 
+	struct ModelType
+	{
+		float x, y, z;
+		float tu, tv;
+		float nx, ny, nz;
+	};
+
 public:
 	ModelClass();
 	ModelClass(const ModelClass& other);
 	~ModelClass();
 
-	bool Initialize(ID3D11Device* device, LPCSTR textureFileName);
+	bool Initialize(ID3D11Device* device, const char* modelFileName, LPCSTR textureFileName);
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext);
 
@@ -52,10 +61,16 @@ private:
 	bool LoadTexture(ID3D11Device* device, LPCSTR textureFileName);
 	void ReleaseTexture();
 
+	// model related
+	bool LoadModel(const char* modelFilename);
+	void ReleaseModel();
+
 private:
 	ID3D11Buffer *m_VertexBuffer, *m_IndexBuffer;
 	int m_VertexCount, m_IndexCount;
 
 	// own class
 	TextureClass* m_TextureClass;
+
+	ModelType* m_Model;
 };
