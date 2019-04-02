@@ -55,7 +55,7 @@ bool GraphicsClass::Initialize(int width, int height, HWND hWnd)
 	if (!m_Model) return false;
 
 	// initialize model class	
-	result = m_Model->Initialize(m_D3D->GetDevice(), "D:\\Projects\\DirectX11_Tutorial\\Resources\\Models\\cube.txt", "D:\\Projects\\DirectX11_Tutorial\\Resources\\Textures\\earth.dds");
+	result = m_Model->Initialize(m_D3D->GetDevice(), "D:\\Projects\\DirectX11_Tutorial\\Resources\\Models\\model.txt", "D:\\Projects\\DirectX11_Tutorial\\Resources\\Textures\\earth.dds");
 	if (!result)
 	{
 		MessageBox(hWnd, "Could not initialize the model object.", "Error", MB_OK);
