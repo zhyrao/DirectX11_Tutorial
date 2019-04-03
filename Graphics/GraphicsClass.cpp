@@ -107,7 +107,9 @@ bool GraphicsClass::Initialize(int width, int height, HWND hWnd)
 	// initialize light object
 	m_LightClass->SetAmbientColor(0.15f, .15f, .15f, 1.f);
 	m_LightClass->SetDiffuseColor(1.f, 1.f, 1.f, 1.f);
-	m_LightClass->SetDirection(0.f, 0.f, 1.f);
+	m_LightClass->SetDirection(1.f, 0.f, 1.f);
+	m_LightClass->SetSpecularColor(1.0f, 0.f, 0.f, 1.f);
+	m_LightClass->SetSpecularPower(64.0f);
 
 	return true;
 }
@@ -174,7 +176,7 @@ bool GraphicsClass::Frame()
 	static float rotation = 0.f;
 
 	// update the rotation varialbe each frame
-	rotation += (float)D3DX_PI* 0.005f;
+	rotation += (float)D3DX_PI* 0.0015f;
 	if (rotation > 360.f)
 		rotation = -360.f;
 
@@ -214,7 +216,8 @@ bool GraphicsClass::Render(float rotation)
 	// result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
 	// result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
 	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), m_LightClass->GetDirection(), m_LightClass->GetAmbientColor(), m_LightClass->GetDiffuseColor());
+		m_Model->GetTexture(), m_LightClass->GetDirection(), m_LightClass->GetAmbientColor(), m_LightClass->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_LightClass->GetSpecularColor(), m_LightClass->GetSpecularPower());
 	if (!result) return false;
 
 	// present the rendered scene to the screen
