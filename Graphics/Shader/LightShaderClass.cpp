@@ -37,12 +37,13 @@ void LightShaderClass::Shutdown()
 	ShutdownShader();
 }
 
-bool LightShaderClass::Render(ID3D11DeviceContext * deviceContext, int indexCount, D3DXMATRIX world, D3DXMATRIX view, D3DXMATRIX proj, ID3D11ShaderResourceView* texture, D3DXVECTOR3 dir, D3DXVECTOR4 color)
+bool LightShaderClass::Render(ID3D11DeviceContext * deviceContext, int indexCount, D3DXMATRIX world, D3DXMATRIX view, D3DXMATRIX proj, ID3D11ShaderResourceView* texture, D3DXVECTOR3 dir,
+	D3DXVECTOR4 ambientColor, D3DXVECTOR4 diffuseColor)
 {
 	bool result;
 
 	// set the shader parameters that it will be use for rendering
-	result = SetShaderParameters(deviceContext, world, view, proj, texture, color, dir);
+	result = SetShaderParameters(deviceContext, world, view, proj, texture, ambientColor, diffuseColor, dir);
 	if (!result) return false;
 
 	// now render the prepared buffers with the shader
@@ -276,7 +277,7 @@ void LightShaderClass::OutputShaderErrorMessage(ID3D10Blob * errorMessage, HWND 
 }
 
 bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext * deviceContext, D3DXMATRIX world, D3DXMATRIX view, D3DXMATRIX projection,
-	                                       ID3D11ShaderResourceView * texture, D3DXVECTOR4 diffuseColor, D3DXVECTOR3 lightDir)
+	                                       ID3D11ShaderResourceView * texture, D3DXVECTOR4 ambientColor, D3DXVECTOR4 diffuseColor, D3DXVECTOR3 lightDir)
 {
 	HRESULT result;
 
@@ -321,6 +322,7 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext * deviceContext, 
 
 	lightDataPtr = (LightBufferType*)mappedResource.pData;
 
+	lightDataPtr->ambientColor = ambientColor;
 	lightDataPtr->diffuseColor = diffuseColor;
 	lightDataPtr->lightDirection = lightDir;
 	lightDataPtr->padding = 0.f;
