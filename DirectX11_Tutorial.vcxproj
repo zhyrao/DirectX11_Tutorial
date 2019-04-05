@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Graphics\Model\BitmapClass.h" />
     <ClInclude Include="Input\Camera\CameraClass.h" />
     <ClInclude Include="Graphics\Shader\ColorShaderClass.h" />
     <ClInclude Include="Graphics\d3d\D3DClass.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Graphics\Shader\TextureShaderClass.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\Model\BitmapClass.cpp" />
     <ClCompile Include="Input\Camera\CameraClass.cpp" />
     <ClCompile Include="Graphics\Shader\ColorShaderClass.cpp" />
     <ClCompile Include="Graphics\d3d\D3DClass.cpp" />

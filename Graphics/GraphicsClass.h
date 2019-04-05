@@ -7,11 +7,12 @@
 
 #include "../Input/Camera/CameraClass.h"
 #include "Model/ModelClass.h"
-#include "Shader/ColorShaderClass.h"
+//#include "Shader/ColorShaderClass.h"
 #include "Shader/TextureShaderClass.h"
 
-#include "Shader/LightShaderClass.h"
-#include "LightClass.h"
+//#include "Shader/LightShaderClass.h"
+//#include "LightClass.h"
+#include "Model/BitmapClass.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Globals
@@ -38,10 +39,11 @@ private:
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
-	ColorShaderClass* m_ColorShader;
+	// ModelClass* m_Model;
+	// ColorShaderClass* m_ColorShader;
 	TextureShaderClass* m_TextureShader;
-	LightShaderClass* m_LightShader;
-	LightClass* m_LightClass;
+	// LightShaderClass* m_LightShader;
+	// LightClass* m_LightClass;
+	BitmapClass* m_Bitmap;
 };
 
