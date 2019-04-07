@@ -37,6 +37,10 @@ public:
 	// two new functions for turning z buffer on and off
 	void TurnZBufferOn();
 	void TurnZbufferOff();
+
+	// two new functions for turning on and off alpha blending
+	void TurnOnAlphaBlending();
+	void TurnOffAlphaBlending();
 private:
 	bool m_Vsync_Enabled;
 	int m_VideoCardMemory;
@@ -56,4 +60,8 @@ private:
 
 	// new depth stencil state for 2d rendering
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
+
+	// two new blending states
+	ID3D11BlendState* m_alphaEnableBlendingState;
+	ID3D11BlendState* m_alphaDisableBlendingState;
 };

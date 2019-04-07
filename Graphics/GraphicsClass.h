@@ -6,9 +6,10 @@
 #include "d3d/D3DClass.h"
 
 #include "../Input/Camera/CameraClass.h"
-#include "Model/ModelClass.h"
+#include "Font/TextClass.h"
+//#include "Model/ModelClass.h"
 //#include "Shader/ColorShaderClass.h"
-#include "Shader/TextureShaderClass.h"
+//#include "Shader/TextureShaderClass.h"
 
 //#include "Shader/LightShaderClass.h"
 //#include "LightClass.h"
@@ -41,9 +42,11 @@ private:
 	CameraClass* m_Camera;
 	// ModelClass* m_Model;
 	// ColorShaderClass* m_ColorShader;
-	TextureShaderClass* m_TextureShader;
+	// TextureShaderClass* m_TextureShader;
 	// LightShaderClass* m_LightShader;
 	// LightClass* m_LightClass;
-	BitmapClass* m_Bitmap;
+	// BitmapClass* m_Bitmap;
+
+	TextClass* m_Text;
 };
 
