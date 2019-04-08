@@ -114,6 +114,40 @@ bool TextClass::Render(ID3D11DeviceContext * deviceContext, D3DXMATRIX worldMatr
 	return true;
 }
 
+bool TextClass::SetMousePosition(int mousex, int mousey, ID3D11DeviceContext * deviceContext)
+{
+	char tempString[16];
+	char mouseString[16];
+	bool result;
+
+	// convert the mouse x integer to string format
+	_itoa_s(mousex, tempString, 10);
+
+	// set up the mousex string
+	strcpy_s(mouseString, "Mouse X:");
+	strcat_s(mouseString, tempString);
+
+	// update the sentence vertex buffer with the new string information
+	result = UpdateSentence(m_sentence1, mouseString, 20, 20, 1.0f, 1.0f, 1.f, deviceContext);
+	if (!result)
+	{
+		return false;
+	}
+
+	// convert mouse y
+	_itoa_s(mousey, tempString, 10);
+
+	// setup the mouse y string
+	strcpy_s(mouseString, "Mouse Y:");
+	strcat_s(mouseString, tempString);
+
+	// update sentence vertex buffer with the new string information
+	result = UpdateSentence(m_sentence2, mouseString, 20, 40, 1.0f, 1.f, 0.f, deviceContext);
+	if (!result) return false;
+
+	return true;
+}
+
 bool TextClass::InitializeSentence(SentenceType ** sentence, int maxLength, ID3D11Device * device)
 {
 	VertexType* vertices;

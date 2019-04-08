@@ -23,15 +23,22 @@ bool SystemClass::Initialize()
 	int screenWidth, screenHeight;
 	bool result;
 
-	screenWidth = screenHeight = 0;
+	// Initialize the width and height of the screen to zero before sending the variables into the function.
+	screenWidth = 0;
+	screenHeight = 0;
 
+	// Initialize the windows api.
 	InitializeWindows(screenWidth, screenHeight);
 
-	m_Input = new InputClass();
+	m_Input = new InputClass;
 	if (!m_Input)
 		return false;
 
-	m_Input->Initialize();
+	result = m_Input->Initialize(m_hInstance, m_Hwnd, screenWidth, screenHeight);
+	if (!result) {
+		MessageBox(m_Hwnd, "Could not initialize the input object.", "Error", MB_OK);
+		return false;
+	}
 
 	m_Graphics = new GraphicsClass();
 	if (!m_Graphics)
@@ -56,6 +63,7 @@ void SystemClass::ShutDown()
 	// release input object
 	if (m_Input)
 	{
+		m_Input->Shutdown();
 		delete m_Input;
 		m_Input = 0;
 	}
@@ -90,40 +98,45 @@ void SystemClass::Run()
 		{
 			result = Frame();
 			if (!result)
+			{
+				MessageBox(m_Hwnd, "Frame Processing Failed", "Error", MB_OK);
 				done = true;
+			}
+		}
+		if (m_Input->IsEscapePressed() == true)
+		{
+			done = true;
 		}
 	}
 }
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hWnd, UINT umsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (umsg)
-	{
-	case WM_KEYDOWN:
-	{
-		m_Input->KeyDown((unsigned int)wParam);
-		return 0;
-	}
-	case WM_KEYUP:
-	{
-		m_Input->KeyUp((unsigned int)wParam);
-		return 0;
-	}
-	default:
-		return DefWindowProc(hWnd, umsg, wParam, lParam);
-	}
+	return DefWindowProc(hWnd, umsg, wParam, lParam);
 }
 
 bool SystemClass::Frame()
 {
 	bool result;
+	int mouseX, mouseY;
 
-	if (m_Input->IsKeyDown(VK_ESCAPE))
+	// do the input frame processing
+	result = m_Input->Frame();
+	if (!result)
+	{
 		return false;
+	}
 
-	result = m_Graphics->Frame();
+	// get the location of the mouse from the input object
+	m_Input->GetMouseLocation(mouseX, mouseY);
+
+	result = m_Graphics->Frame(mouseX, mouseY);
 	if (!result)
 		return false;
+
+	// finally render the graphics to the screen
+	result = m_Graphics->Render();
+	if (!result) return false;
 
 	return true;
 }

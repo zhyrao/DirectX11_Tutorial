@@ -1,4 +1,16 @@
 #pragma once
+
+// preprocessing directives
+#define  DIRECTINPUT_VERSION 0x0800
+
+
+// LINKING
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"dxguid.lib")
+
+// include
+#include<dinput.h>
+
 class InputClass
 {
 public:
@@ -7,18 +19,27 @@ public:
 	~InputClass();
 
 	// initialize all keys state
-	void Initialize();
+	bool Initialize(HINSTANCE hInstance, HWND hwnd, int screenW, int screenH);
+	void Shutdown();
+	bool Frame();
 
-	// key down and up
-	void KeyDown(unsigned int keyCode);
-	void KeyUp(unsigned int keyCode);
-
-
-	// get a key state
-	bool IsKeyDown(unsigned int keyCode);
+	bool IsEscapePressed();
+	void GetMouseLocation(int& posx, int& posy);
 
 private:
-	// key state holder
-	bool m_keys[256];
+	bool ReadKeyboard();
+	bool ReadMouse();
+	void ProcessInput();
+
+private:
+	IDirectInput8* m_directInput;
+	IDirectInputDevice8* m_keyboard;
+	IDirectInputDevice8* m_mouse;
+
+	unsigned char m_keyboardState[256];
+	DIMOUSESTATE m_mouseState;
+
+	int m_screenWidth, m_screenHeight;
+	int m_mouseX, m_mouseY;
 };
 

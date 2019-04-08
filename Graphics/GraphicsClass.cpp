@@ -222,19 +222,21 @@ void GraphicsClass::ShutDown()
 	return;
 }
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(int mouseX, int mouseY)
 {
 	bool result;
 	
-	static float rotation = 0.f;
-
-	// update the rotation varialbe each frame
-	rotation += (float)D3DX_PI* 0.0015f;
-	if (rotation > 360.f)
-		rotation = -360.f;
-
+	//static float rotation = 0.f;
+	//
+	//// update the rotation varialbe each frame
+	//rotation += (float)D3DX_PI* 0.0015f;
+	//if (rotation > 360.f)
+	//	rotation = -360.f;
+	
 	// render the graphic scene
-	result = Render(rotation);
+	//result = Render(rotation);
+	result = m_Text->SetMousePosition(mouseX, mouseY, m_D3D->GetDeviceContext());
+	printf("mouseX: %d, mouseY: %d", mouseX, mouseY);
 	if (!result)
 	{
 		return false;
@@ -243,7 +245,7 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
-bool GraphicsClass::Render(float rotation)
+bool GraphicsClass::Render()
 {
 	D3DXMATRIX viewMatrix, worldMatrix, projectionMatrix, orthoMatrix;
 	bool result;

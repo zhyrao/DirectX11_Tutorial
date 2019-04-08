@@ -32,10 +32,9 @@ public:
 
 	bool Initialize(int width, int height, HWND hWnd);
 	void ShutDown();
-	bool Frame();
+	bool Frame(int mouseX, int mouseY);
 
-private:
-	bool Render(float t);
+	bool Render();
 
 private:
 	D3DClass* m_D3D;
